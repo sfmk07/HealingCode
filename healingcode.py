@@ -38,3 +38,58 @@ class Docteur:
 
     def recevoir_paiement(self, montant):
         self.argent += montant
+
+    def chat_miaule(self):
+        print("Miaou!")
+
+class Pharmacie:
+    def __init__(self):
+        self.prix_des_traitements = {
+            "ctrl+maj+f": 60,
+            "saveOnFocusChange": 100,
+            "CheckLinkRelation": 35,
+            "Ventoline": 40,
+            "f12+doc": 20
+        }
+
+    def vendre_medicament(self, traitement, patient):
+        if patient.argent >= self.prix_des_traitements[traitement]:
+            patient.payer(self.prix_des_traitements[traitement])
+            patient.prendre_medicament(traitement)
+            print(f"{patient.nom} a acheté le traitement {traitement}.")
+        else:
+            patient.etat_de_sante = "mort"
+            print(f"{patient.nom} n'a pas assez d'argent pour le traitement et est maintenant mort.")
+
+def simuler_code_de_guerison(patients, docteur, pharmacie):
+    for patient in patients:
+        # Le patient va chez le médecin
+        patient.se_rendre_a("cabinet du docteur")
+        traitement = docteur.diagnostiquer(patient)
+        docteur.recevoir_paiement(50)
+        patient.payer(50)
+
+        # Le chat du docteur miaule
+        docteur.chat_miaule()
+        time.sleep(2)  # Le chat miaule toutes les deux secondes
+
+        # Le patient va à la pharmacie
+        patient.se_rendre_a("pharmacie")
+        pharmacie.vendre_medicament(traitement, patient)
+
+        # Afficher l'état du patient
+        print(f"Statut de {patient.nom}: Santé - {patient.etat_de_sante}, Argent - {patient.argent}€, Traitement - {patient.poche}\n")
+
+# Création des instances et exécution de la simulation
+donnees_patients = [
+    Patient("Marcus", "mal indenté", 100),
+    Patient("Optimus", "unsave", 200),
+    Patient("Sangoku", "404", 80),
+    Patient("DarthVader", "azmatique", 110),
+    Patient("Semicolon", "syntaxError", 60)
+]
+
+docteur = Docteur()
+pharmacie = Pharmacie()
+
+simuler_code_de_guerison(donnees_patients, docteur, pharmacie)
